@@ -31,6 +31,7 @@ public class ClienteRequest {
 
         Cliente c = Cliente.builder()
                 .nome(nome)
+                .dataNascimento(dataNascimento)
                 .cpf(cpf)
                 .foneCelular(foneCelular)
                 .foneFixo(foneFixo)
