@@ -20,9 +20,9 @@ public class ClienteService extends GenericService {
 
        super.preencherCamposAuditoria(cliente);
        return repository.save(cliente);
-   }
+    }
 
-   public List<Cliente> listarTodos() {
+    public List<Cliente> listarTodos() {
   
         return repository.findAll();
     }

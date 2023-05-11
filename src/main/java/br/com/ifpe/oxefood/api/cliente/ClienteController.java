@@ -31,18 +31,18 @@ public class ClienteController extends GenericController {
         Cliente clienteNovo = request.build();
         Cliente cliente = clienteService.save(clienteNovo);
         return new ResponseEntity<Cliente>(cliente, HttpStatus.CREATED);
-   }
+    }
 
    @GetMapping
    public List<Cliente> listarTodos() {
   
-       return clienteService.listarTodos();
-   }
+        return clienteService.listarTodos();
+    }
 
-   @GetMapping("/{id}")
-   public Cliente obterPorID(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    public Cliente obterPorID(@PathVariable Long id) {
 
        return clienteService.obterPorID(id);
-   }
+    }
    
 }
