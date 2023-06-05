@@ -56,5 +56,16 @@ public class EntregadorService extends GenericService {
         super.preencherCamposAuditoria(entregador);
         repository.save(entregador);
     }
+
+    @Transactional
+    public void delete(Long id) {
+
+        Entregador entregador = repository.findById(id).get();
+        entregador.setHabilitado(Boolean.FALSE);
+        super.preencherCamposAuditoria(entregador);
+
+        repository.save(entregador);
+    }
+
     
 }
