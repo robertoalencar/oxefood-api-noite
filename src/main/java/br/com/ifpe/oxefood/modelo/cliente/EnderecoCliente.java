@@ -1,4 +1,4 @@
-package br.com.ifpe.oxefood.modelo.produto;
+package br.com.ifpe.oxefood.modelo.cliente;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -6,6 +6,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Where;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import br.com.ifpe.oxefood.util.entity.EntidadeAuditavel;
 import lombok.AllArgsConstructor;
@@ -15,34 +17,38 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "Produto")
+@Table(name = "EnderecoCliente")
 @Where(clause = "habilitado = true")
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Produto extends EntidadeAuditavel {
+public class EnderecoCliente extends EntidadeAuditavel {
 
+    @JsonIgnore
     @ManyToOne
-    private CategoriaProduto categoria;
-    
+    private Cliente cliente;
+ 
     @Column
-    private String codigo;
-    
+    private String rua;
+ 
     @Column
-    private String titulo;
-    
+    private String numero;
+ 
     @Column
-    private String descricao;
-    
+    private String bairro;
+
     @Column
-    private Double valorUnitario;
-    
-    @Column
-    private Integer tempoEntregaMinimo;
-    
-    @Column
-    private Integer tempoEntregaMaximo;
-    
+   private String cep;
+
+   @Column
+   private String cidade;
+
+   @Column
+   private String estado;
+
+   @Column
+   private String complemento;
+
 }

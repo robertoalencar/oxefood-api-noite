@@ -18,61 +18,47 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.ifpe.oxefood.modelo.produto.CategoriaProduto;
 import br.com.ifpe.oxefood.modelo.produto.CategoriaProdutoService;
-import br.com.ifpe.oxefood.modelo.produto.Produto;
-import br.com.ifpe.oxefood.modelo.produto.ProdutoService;
 import br.com.ifpe.oxefood.util.entity.GenericController;
 
 @RestController
-@RequestMapping("/api/produto")
-public class ProdutoController extends GenericController {
-    
-    @Autowired
-    private ProdutoService produtoService;
+@RequestMapping("/api/categoriaproduto")
+public class CategoriaProdutoController extends GenericController {
 
     @Autowired
     private CategoriaProdutoService categoriaProdutoService;
 
     @PostMapping
-    public ResponseEntity<Produto> save(@RequestBody @Valid ProdutoRequest request) {
+    public ResponseEntity<CategoriaProduto> save(@RequestBody @Valid CategoriaProdutoRequest request) {
 
-        Produto produtoNovo = request.build();
-        
-        CategoriaProduto cp = categoriaProdutoService.obterPorID(request.getIdCategoria());
-        produtoNovo.setCategoria(cp);
-        
-        Produto produto = produtoService.save(produtoNovo);
-        return new ResponseEntity<Produto>(produto, HttpStatus.CREATED);
+        CategoriaProduto categoriaProdutoNovo = request.build();
+        CategoriaProduto categoriaProduto = categoriaProdutoService.save(categoriaProdutoNovo);
+        return new ResponseEntity<CategoriaProduto>(categoriaProduto, HttpStatus.CREATED);
     }
 
     @GetMapping
-    public List<Produto> listarTodos() {
+    public List<CategoriaProduto> listarTodos() {
   
-       return produtoService.listarTodos();
+       return categoriaProdutoService.listarTodos();
     }
 
     @GetMapping("/{id}")
-    public Produto obterPorID(@PathVariable Long id) {
+    public CategoriaProduto obterPorID(@PathVariable Long id) {
 
-       return produtoService.obterPorID(id);
+       return categoriaProdutoService.obterPorID(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Produto> update(@PathVariable("id") Long id, @RequestBody ProdutoRequest request) {
+    public ResponseEntity<CategoriaProduto> update(@PathVariable("id") Long id, @RequestBody CategoriaProdutoRequest request) {
 
-        Produto produto = request.build();
-        produto.setCategoria(categoriaProdutoService.obterPorID(request.getIdCategoria()));
-        produtoService.update(id, produto);
-
+        categoriaProdutoService.update(id, request.build());
         return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
 
-        produtoService.delete(id);
+        categoriaProdutoService.delete(id);
         return ResponseEntity.ok().build();
     }
-
-
-
+    
 }
