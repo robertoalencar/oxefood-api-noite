@@ -2,13 +2,16 @@ package br.com.ifpe.oxefood.modelo.cliente;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.ifpe.oxefood.modelo.acesso.UsuarioService;
 import br.com.ifpe.oxefood.util.entity.GenericService;
+import br.com.ifpe.oxefood.util.exception.EntidadeNaoEncontradaException;
 
 @Service
 public class ClienteService extends GenericService {
@@ -17,10 +20,15 @@ public class ClienteService extends GenericService {
     private ClienteRepository repository;
 
     @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
     private EnderecoClienteRepository enderecoClienteRepository;
 
     @Transactional
     public Cliente save(Cliente cliente) {
+
+        usuarioService.save(cliente.getUsuario());
 
         super.preencherCamposAuditoria(cliente);
         return repository.save(cliente);
@@ -33,7 +41,14 @@ public class ClienteService extends GenericService {
 
     public Cliente obterPorID(Long id) {
 
-        return repository.findById(id).get();
+        Optional<Cliente> consulta = repository.findById(id);
+  
+       if (consulta.isPresent()) {
+           return consulta.get();
+       } else {
+           throw new EntidadeNaoEncontradaException("Cliente", id);
+       }
+
     }
 
     @Transactional
