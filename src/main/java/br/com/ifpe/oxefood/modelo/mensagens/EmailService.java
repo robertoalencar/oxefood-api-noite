@@ -53,7 +53,7 @@ public class EmailService {
         params.setVariable("nome", cliente.getNome());
         params.setVariable("cpf", cliente.getCpf());
 
-        this.sendMailTemplate("bem_vindo_cliente.html", cliente.getEmail(), assuntoEmail, params);
+        this.sendMailTemplate("bem_vindo_cliente.html", cliente.getUsuario().getUsername(), assuntoEmail, params);
     }
 
     @Async

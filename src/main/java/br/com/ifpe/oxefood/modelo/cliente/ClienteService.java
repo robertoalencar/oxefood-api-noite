@@ -7,6 +7,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import br.com.ifpe.oxefood.modelo.acesso.Usuario;
+import br.com.ifpe.oxefood.modelo.acesso.UsuarioService;
 import br.com.ifpe.oxefood.modelo.mensagens.EmailService;
 import br.com.ifpe.oxefood.util.exception.ClienteException;
 import jakarta.transaction.Transactional;
@@ -23,8 +25,11 @@ public class ClienteService {
     @Autowired
     private EmailService emailService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     @Transactional
-    public Cliente save(Cliente cliente) {
+    public Cliente save(Cliente cliente, Usuario usuarioLogado) {
 
         Cliente clienteConsultado = repository.findByNome(cliente.getNome());
 
@@ -32,13 +37,16 @@ public class ClienteService {
             throw new ClienteException(ClienteException.MSG_NOME_DUPLICADO);
         }
 
+        usuarioService.save(cliente.getUsuario());
+
         cliente.setHabilitado(Boolean.TRUE);
         cliente.setVersao(1L);
         cliente.setDataCriacao(LocalDate.now());
+        cliente.setCriadoPor(usuarioLogado);
 
         Cliente clienteSalvo = repository.save(cliente);
 
-        emailService.enviarEmailConfirmacaoCadastroCliente(clienteSalvo);
+        //emailService.enviarEmailConfirmacaoCadastroCliente(clienteSalvo);
 
         return clienteSalvo;
     }
@@ -54,7 +62,7 @@ public class ClienteService {
     }
 
     @Transactional
-    public void update(Long id, Cliente clienteAlterado) {
+    public void update(Long id, Cliente clienteAlterado, Usuario usuarioLogado) {
 
         Cliente cliente = repository.findById(id).get();
         cliente.setNome(clienteAlterado.getNome());
@@ -64,6 +72,8 @@ public class ClienteService {
         cliente.setFoneFixo(clienteAlterado.getFoneFixo());
             
         cliente.setVersao(cliente.getVersao() + 1);
+        cliente.setDataUltimaModificacao(LocalDate.now());
+        cliente.setUltimaModificacaoPor(usuarioLogado);
         repository.save(cliente);
     }
 
