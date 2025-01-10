@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.ifpe.oxefood.modelo.acesso.UsuarioService;
 import br.com.ifpe.oxefood.modelo.cliente.Cliente;
 import br.com.ifpe.oxefood.modelo.cliente.ClienteService;
 import br.com.ifpe.oxefood.modelo.cliente.EnderecoCliente;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -28,11 +30,14 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    @PostMapping
-    public ResponseEntity<Cliente> save(@RequestBody @Valid ClienteRequest request) {
+    @Autowired
+    private UsuarioService usuarioService;
 
-        Cliente clienteNovo = request.build();
-        Cliente cliente = clienteService.save(clienteNovo);
+    @PostMapping
+    public ResponseEntity<Cliente> save(@RequestBody @Valid ClienteRequest clienteRequest, HttpServletRequest request) {
+
+        Cliente clienteNovo = clienteRequest.build();
+        Cliente cliente = clienteService.save(clienteNovo, usuarioService.obterUsuarioLogado(request));
         return new ResponseEntity<Cliente>(cliente, HttpStatus.CREATED);
     }
 
@@ -50,9 +55,9 @@ public class ClienteController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Cliente> update(@PathVariable("id") Long id, 
-            @RequestBody @Valid ClienteRequest request) {
+            @RequestBody @Valid ClienteRequest clienteRequest, HttpServletRequest request) {
 
-        clienteService.update(id, request.build());
+        clienteService.update(id, clienteRequest.build(), usuarioService.obterUsuarioLogado(request));
         return ResponseEntity.ok().build();
     }
 
