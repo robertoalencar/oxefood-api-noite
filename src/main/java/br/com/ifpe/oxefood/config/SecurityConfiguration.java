@@ -46,14 +46,14 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.GET, "/api-docs/*").permitAll()
                 .requestMatchers(HttpMethod.GET, "/swagger-ui/*").permitAll()
 
-                .requestMatchers(HttpMethod.GET, "/api/produto/").hasAnyAuthority(
-                   Perfil.ROLE_CLIENTE,
-                   Perfil.ROLE_FUNCIONARIO_ADMIN,
-                   Perfil.ROLE_FUNCIONARIO_USER) //Consulta de produto
+                // .requestMatchers(HttpMethod.GET, "/api/produto/").hasAnyAuthority(
+                //    Perfil.ROLE_CLIENTE,
+                //    Perfil.ROLE_FUNCIONARIO_ADMIN,
+                //    Perfil.ROLE_FUNCIONARIO_USER) //Consulta de produto
 
-                .requestMatchers(HttpMethod.POST, "/api/produto").hasAnyAuthority(
-                   Perfil.ROLE_FUNCIONARIO_ADMIN,
-                   Perfil.ROLE_FUNCIONARIO_USER) //Cadastro de produto
+                // .requestMatchers(HttpMethod.POST, "/api/produto").hasAnyAuthority(
+                //    Perfil.ROLE_FUNCIONARIO_ADMIN,
+                //    Perfil.ROLE_FUNCIONARIO_USER) //Cadastro de produto
 
                 .requestMatchers(HttpMethod.PUT, "/api/produto/*").hasAnyAuthority(
                    Perfil.ROLE_FUNCIONARIO_ADMIN,
