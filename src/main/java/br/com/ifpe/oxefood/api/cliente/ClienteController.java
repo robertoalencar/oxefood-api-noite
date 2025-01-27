@@ -19,12 +19,18 @@ import br.com.ifpe.oxefood.modelo.acesso.UsuarioService;
 import br.com.ifpe.oxefood.modelo.cliente.Cliente;
 import br.com.ifpe.oxefood.modelo.cliente.ClienteService;
 import br.com.ifpe.oxefood.modelo.cliente.EnderecoCliente;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/cliente")
 @CrossOrigin
+@Tag(
+    name = "API Cliente",
+    description = "API responsável pelos servidos de cliente no sistema"
+)
 public class ClienteController {
     
     @Autowired
@@ -33,6 +39,10 @@ public class ClienteController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Operation(
+       summary = "Serviço responsável por salvar um cliente no sistema.",
+       description = "Exemplo de descrição de um endpoint responsável por inserir um cliente no sistema."
+    )
     @PostMapping
     public ResponseEntity<Cliente> save(@RequestBody @Valid ClienteRequest clienteRequest, HttpServletRequest request) {
 
@@ -41,12 +51,18 @@ public class ClienteController {
         return new ResponseEntity<Cliente>(cliente, HttpStatus.CREATED);
     }
 
+    @Operation(
+        summary = "Serviço responsável por listar todos os clientes do sistema."
+    )
     @GetMapping
     public List<Cliente> listarTodos() {
 
         return clienteService.listarTodos();
     }
 
+    @Operation(
+        summary = "Serviço responsável por consultar um cliente referente ao ID passado na URL."
+    )
     @GetMapping("/{id}")
     public Cliente obterPorID(@PathVariable Long id) {
         
